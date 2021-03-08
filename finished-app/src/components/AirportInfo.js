@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
 import './AirportInfo.css';
-import Places from './Places';
+import Quotes from './Quotes';
 
 function AirportInfo() { 
-    const [places,setPlaces] = useState([])
+    const [quotes,setQuotes] = useState([])
     const [originplace,setOriginplace] = useState("")
     const [destinationplace,setDestinationplace] = useState("")
     const [outboundpartialdate,setOutboundpartialdate] = useState("")
     const [inboundpartialdate,setInboundpartialdate] = useState("")
-    const [showPlaces,setShowPlaces] = useState(false)
+    const [showQuotes,setShowQuotes] = useState(false)
 
     function handleSubmit(e) {
         e.preventDefault()
@@ -43,11 +43,11 @@ function AirportInfo() {
             response = await response.json()
             console.log(response)
             // console.log(response) //{Places: Array(10)}
-            setPlaces(response.Places)
-            console.log(response.Places) //Warning: Each child in a list should have a unique "key" prop.
+            setQuotes(response.Quotes)
+            console.log(response.Quotes) //Warning: Each child in a list should have a unique "key" prop.
         }
         fetchMyAPI()
-        setShowPlaces(true)
+        setShowQuotes(true)
         setOriginplace("")
         setDestinationplace("")
         setOutboundpartialdate("")
@@ -64,14 +64,14 @@ function AirportInfo() {
                 <br />
                 <label htmlFor="queryInput">Depart:</label>
                 <input id="queryInput" value={outboundpartialdate} onChange={e => setOutboundpartialdate(e.target.value)} placeholder = "2021-03" required/>
-                <label htmlFor="queryInput">Arrive:</label>
+                <label htmlFor="queryInput">Return (round trip):</label>
                 <input id="queryInput" value={inboundpartialdate} onChange={e => setInboundpartialdate(e.target.value)} placeholder = "2021-04" required/>
 
                 {/* <label htmlFor="queryInput">State or Country:</label> //need to comment with braces */}
                 {/* <input id="queryInput" value={query} onChange={e => setQuery(e.target.value)} required/> */}
                 <button className="search">Submit</button>
            </form>
-           { showPlaces ? <Places places={places}></Places> : <></>}
+           { showQuotes ? <Quotes quotes={quotes}></Quotes> : <></>}
         </div>
     )
 }
