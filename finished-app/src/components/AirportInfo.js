@@ -4,6 +4,7 @@ import Quotes from './Quotes';
 
 function AirportInfo() { 
     const [quotes,setQuotes] = useState([])
+    const [quotes2,setQuotes2] = useState([])
     const [originplace,setOriginplace] = useState("")
     const [destinationplace,setDestinationplace] = useState("")
     const [outboundpartialdate,setOutboundpartialdate] = useState("")
@@ -44,6 +45,7 @@ function AirportInfo() {
             console.log(response)
             // console.log(response) //{Places: Array(10)}
             setQuotes(response.Quotes)
+            setQuotes2(response.Quotes)
             console.log(response.Quotes) //Warning: Each child in a list should have a unique "key" prop.
         }
         fetchMyAPI()
@@ -71,7 +73,11 @@ function AirportInfo() {
                 {/* <input id="queryInput" value={query} onChange={e => setQuery(e.target.value)} required/> */}
                 <button className="search">Submit</button>
            </form>
-           { showQuotes ? <Quotes quotes={quotes}></Quotes> : <></>}
+           { showQuotes ? 
+            <div>
+                <Quotes quotes={quotes}></Quotes>
+                <Quotes quotes={quotes2}></Quotes>
+            </div> : <></>}
         </div>
     )
 }
