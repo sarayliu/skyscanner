@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import './AirportInfo.css';
 import Quotes from './Quotes';
+import Places from './Places';
 
 function AirportInfo() { 
     const [quotes,setQuotes] = useState([])
@@ -77,6 +78,7 @@ function AirportInfo() {
             <div>
                 <Quotes quotes={quotes}></Quotes>
                 <Quotes quotes={quotes2}></Quotes>
+                <Places></Places>
             </div> : <></>}
         </div>
     )
