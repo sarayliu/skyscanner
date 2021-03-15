@@ -4,7 +4,7 @@ import Quotes from './Quotes';
 import Places from './Places';
 
 function AirportInfo() { 
-    const [places1,setPlaces1] = useState([])
+    var [places1,setPlaces1] = useState([])
     const [query1,setQuery1] = useState("")
     const [places2,setPlaces2] = useState([])
     const [query2,setQuery2] = useState("")
@@ -41,6 +41,14 @@ function AirportInfo() {
         }
         fetchMyAPI()
         setShowPlaces(true)
+
+        if (localStorage.getItem("myJson") !== null) {
+             var passedJson = localStorage.getItem("myJson"); //get saved data anytime
+             console.log(passedJson);
+        }
+        else {
+            console.log('did not print');
+        }
     }
 
     function handleQuotesSubmit(e) {
@@ -89,6 +97,20 @@ function AirportInfo() {
         */}
     }
 
+    {/*
+    function callbackFunction(childData) {
+      this.setState({message: childData})
+    }
+
+    places1 = (value) => {
+        console.log('In Parent component');
+        console.log(value);
+        // this.setState({selectedRow:value});
+        // this.setState({childObj:value});
+    }
+
+*/}
+
     return(
         <div className="airportinfo">
            <form onSubmit={handlePlacesSubmit}> {/*handleQuotesSubmit}>*/}
@@ -109,7 +131,7 @@ function AirportInfo() {
 
                 {/* <label htmlFor="queryInput">State or Country:</label> //need to comment with braces */}
                 {/* <input id="queryInput" value={query} onChange={e => setQuery(e.target.value)} required/> */}
-                <button className="search">Submit</button>
+                <button className="search">Submit States and Dates</button>
            </form>
            { showPlaces ? 
                 <div>
@@ -120,6 +142,7 @@ function AirportInfo() {
                 </div> : <></>
             }
         </div>
+
     )
 }
 

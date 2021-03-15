@@ -79,7 +79,11 @@ function Table({ columns, data }) {
                   onClick: e => {
                     toggleAllRowsSelected(false)
                     row.toggleRowSelected()
+                    console.log('row: ' + row)
                     console.log(row)
+                    console.log('state: ' + state)
+                  {/*this.props.selectedRow(row)*/}
+                    localStorage.setItem("myJson", row.original.PlaceId);
                   },
                   style: {
                     backgroundColor: row.isSelected ? 'green' : '',
@@ -99,10 +103,12 @@ function Table({ columns, data }) {
           })}
         </div>
       </div>
+      {/*
       <pre>
         <code>
           {JSON.stringify(state, null, 2)}</code>
       </pre>
+    */}
     </>
   )
 }
