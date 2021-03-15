@@ -24,6 +24,7 @@ const Styles = styled.div`
       padding: 0.5rem;
       border-bottom: 1px solid black;
       border-right: 1px solid black;
+      font-weight: bold;
 
       :last-child {
         border-right: 0;
@@ -32,31 +33,8 @@ const Styles = styled.div`
   }
 `
 
-let sourceGridData = []
-const updateRateMS = 16
-
-function Table({ columns }) {
-  // Use the state and functions returned from useTable to build your UI
-
-  const [data, setData] = React.useState([])
-  const timerRunning = React.useRef()
-
-  if (!timerRunning.current) {
-    timerRunning.current = true
-    setInterval(() => {
-      sourceGridData.push(makeRow(sourceGridData.length))
-      let newData = [...sourceGridData]
-
-      setData(newData)
-    }, updateRateMS)
-  }
-
-  const defaultColumn = React.useMemo(
-    () => ({
-      width: 150,
-    }),
-    []
-  )
+function Table({ columns, data }) {
+  // Use the state and functions returned from useTable to build UI
 
   const {
     getTableProps,
@@ -71,13 +49,12 @@ function Table({ columns }) {
       autoResetSelectedRows: false,
       columns,
       data,
-      defaultColumn,
     },
     useBlockLayout,
     useRowSelect
   )
 
-  // Render the UI for your table
+  // Render the UI for table
   return (
     <>
       <div {...getTableProps()} className="table">
@@ -94,17 +71,19 @@ function Table({ columns }) {
         </div>
 
         <div {...getTableBodyProps()}>
-          {rows.slice(0, 10).map(row => {
+          {rows.map(row => {
             prepareRow(row)
             return (
               <div
                 {...row.getRowProps({
-                  style: {
-                    backgroundColor: row.isSelected ? 'green' : '',
-                  },
                   onClick: e => {
                     toggleAllRowsSelected(false)
                     row.toggleRowSelected()
+                    console.log(row)
+                    globalVar = row;
+                  },
+                  style: {
+                    backgroundColor: row.isSelected ? 'green' : '',
                   },
                 })}
                 className="tr"
@@ -122,96 +101,55 @@ function Table({ columns }) {
         </div>
       </div>
       <pre>
-        <code>{JSON.stringify(state, null, 2)}</code>
+        <code>
+          {JSON.stringify(state, null, 2)}</code>
       </pre>
     </>
   )
 }
 
-function Places() {
+function Places(props) {
   const columns = React.useMemo(
     () => [
       {
-        Header: 'ID',
-        accessor: 'id',
+        Header: 'Airport ID',
+        accessor: 'PlaceId',
       },
       {
-        Header: 'Name',
-        accessor: 'name',
+        Header: 'Airport Name',
+        accessor: 'PlaceName',
       },
       {
-        Header: 'age',
-        accessor: 'age',
+        Header: 'Country ID',
+        accessor: 'CountryId',
       },
       {
-        Header: 'gender',
-        accessor: 'gender',
+        Header: 'Region ID',
+        accessor: 'RegionId',
       },
       {
-        Header: 'height',
-        accessor: 'height',
+        Header: 'City ID',
+        accessor: 'CityId',
       },
       {
-        Header: 'color',
-        accessor: 'col',
-      },
-      {
-        Header: 'dob',
-        accessor: 'dob',
+        Header: 'Country Name',
+        accessor: 'CountryName',
       },
     ],
     []
   )
 
+  console.log('props' + props)
+  console.log(props.places)
+
+  const data = props.places
+  console.log(data)
+
   return (
     <Styles>
-      <Table columns={columns} />
+      <Table columns={columns} data={data} />
     </Styles>
   )
 }
 
-function makeRow(id) {
-  let r = Math.floor(Math.random() * 3) + 1
-  if (r === 0) {
-    return {
-      Id: id,
-      name: 'Billy Bob',
-      age: 12,
-      gender: 'male',
-      height: 95,
-      col: 'red',
-      dob: '14/05/2010',
-    }
-  } else if (r === 1) {
-    return {
-      Id: id,
-      name: 'Jenny Jane',
-      age: 42,
-      gender: 'female',
-      height: 142,
-      col: 'blue',
-      dob: '30/07/1954',
-    }
-  } else if (r === 2) {
-    return {
-      Id: id,
-      name: 'Steve McAlistaire',
-      age: 35,
-      gender: 'male',
-      height: 176,
-      col: 'green',
-      dob: '04/11/1982',
-    }
-  } else if (r === 3) {
-    return {
-      Id: id,
-      name: 'Jeff Joe',
-      age: 35,
-      gender: 'male',
-      height: 176,
-      col: 'green',
-      dob: '04/11/1982',
-    }
-  }
-}
 export default Places
