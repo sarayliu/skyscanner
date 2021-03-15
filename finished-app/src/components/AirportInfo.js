@@ -117,17 +117,19 @@ function AirportInfo() {
                         <Places places={places1}></Places> 
                     <h2>Choose a destination airport:</h2>
                         <Places places={places2}></Places>
-                </div> : <></>}
-
-           {/*
-           { showQuotes ? 
-            <div>
-                <Quotes quotes={quotes}></Quotes>
-                <Quotes quotes={quotes2}></Quotes>
-                <Places></Places>
-            </div> : <></>}*/}
+                </div> : <></>
+            }
         </div>
     )
 }
 
 export default AirportInfo;
+
+{
+    /*           {showQuotes ?
+           //  <div>
+           //      <Quotes quotes={quotes}></Quotes>
+           //      <Quotes quotes={quotes2}></Quotes>
+           //      <Places></Places>
+           //  </div> : <></>} */
+}

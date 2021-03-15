@@ -80,7 +80,6 @@ function Table({ columns, data }) {
                     toggleAllRowsSelected(false)
                     row.toggleRowSelected()
                     console.log(row)
-                    globalVar = row;
                   },
                   style: {
                     backgroundColor: row.isSelected ? 'green' : '',
