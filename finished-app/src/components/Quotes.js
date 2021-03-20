@@ -21,23 +21,6 @@ function Quotes(props) {
                     </tr>
                 </thead>
                 <tbody>
-                    {/*getTrProps={(state, rowInfo) => {
-                        if (rowInfo && rowInfo.row) {
-                            return {
-                                onClick: (e) => {
-                                    this.setState({
-                                        selected: rowInfo.index
-                                    })
-                                },
-                                style: {
-                                    background: rowInfo.index === this.state.selected ? '#00afec' : 'white',
-                                    color: rowInfo.index === this.state.selected ? 'white' : 'black'
-                                }
-                            }
-                        }else{
-                            return {}
-                        }
-                    }}*/}
                     {props.quotes.map(quote => {
                         return (<tr id={quote.QuoteId} onClick={() => console.log(quote.QuoteId)}>
                             <th>{quote.QuoteId}</th>

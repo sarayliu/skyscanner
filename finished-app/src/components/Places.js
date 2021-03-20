@@ -144,11 +144,11 @@ function Places(props) {
     []
   )
 
-  console.log('props' + props)
-  console.log(props.places)
+  console.log('props: ' + props);
+  console.log(props.places);
 
-  const data = props.places
-  console.log(data)
+  const data = props.places;
+  console.log('data: ' + data);
 
   return (
     <Styles>

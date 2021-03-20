@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './AirportInfo.css';
 import Quotes from './Quotes';
 import Places from './Places';
@@ -9,13 +9,19 @@ function AirportInfo() {
     const [places2,setPlaces2] = useState([])
     const [query2,setQuery2] = useState("")
     const [quotes,setQuotes] = useState([])
-    const [quotes2,setQuotes2] = useState([])
-    const [originplace,setOriginplace] = useState("")
-    const [destinationplace,setDestinationplace] = useState("")
+    //const [quotes2,setQuotes2] = useState([])
+    //const [originplace,setOriginplace] = useState("")
+    //const [destinationplace,setDestinationplace] = useState("")
     const [outboundpartialdate,setOutboundpartialdate] = useState("")
     const [inboundpartialdate,setInboundpartialdate] = useState("")
     const [showPlaces,setShowPlaces] = useState(false)
     const [showQuotes,setShowQuotes] = useState(false)
+
+    const [originMessage, setOriginMessage] = useState(false)
+    const [destinationMessage, setDestinationMessage] = useState(false)
+
+    var originplaceStr = "";
+    var destinationplaceStr = "";
 
     function handlePlacesSubmit(e) {
         e.preventDefault()
@@ -41,18 +47,43 @@ function AirportInfo() {
         }
         fetchMyAPI()
         setShowPlaces(true)
+    }
 
+    function handleOriginSubmit(e) { //need to capitalize function to make it a React component and be able to use useEffect
         if (localStorage.getItem("myJson") !== null) {
-             var passedJson = localStorage.getItem("myJson"); //get saved data anytime
-             console.log(passedJson);
-        }
-        else {
-            console.log('did not print');
+              var passedJson = localStorage.getItem("myJson") //get saved data anytime
+              console.log('Origin Airport: ' + passedJson)
+              console.log(passedJson)
+              // setOriginplace(passedJson) //doesn't update immediately since it goes into a queue
+              // console.log("originplace set to: " + originplace)
+              // console.log(originplace)
+
+              // useEffect(() => {setOriginplace(passedJson)}, []) //can't actually use in a conditional or in a nested function
+
+              // setOriginplace(prevState => ({ //didn't update
+              //    ...prevState,
+              //    originplace: passedJson, // overwrite the value of the field to update
+              // }));
+              // console.log("originplace set to: " + originplace)
+
+              // async function updateOriginplace() { //always one behind
+              //    let response3 = await setOriginplace(passedJson)
+              // }
+              // updateOriginplace()
+              // console.log("originplace set to: " + originplace)
+
+              window.originplaceStr = passedJson;
+              console.log("originplaceStr set to: " + window.originplaceStr)
+              setOriginMessage(true)
+         }
+         else {
+             console.log('Nothing stored')
         }
     }
 
     function handleQuotesSubmit(e) {
         e.preventDefault()
+        console.log("originplaceStr set to: " + originplaceStr)
         async function fetchMyAPI() {
             const reqOptions = {
                 method: 'GET',
@@ -62,6 +93,28 @@ function AirportInfo() {
                     "useQueryString": true
                 }
             }
+
+            if (localStorage.getItem("myJson") !== null) {
+                 var passedJson2 = localStorage.getItem("myJson") //get saved data anytime
+                 console.log('Destination Airport: ' + passedJson2)
+                 // setDestinationplace(passedJson2) //doesn't update immediately since it goes into a queue
+                 // console.log("destinationplace set to: " + destinationplace)
+                 // setDestinationMessage(true)
+
+                // setDestinationplace(prevState => ({ //didn't update
+                //     destinationplace: passedJson2, // overwrite the value of the field to update
+                // }));
+                // console.log("destinationplace set to: " + destinationplace)
+
+                window.destinationplaceStr = passedJson2;
+                console.log("destinationplaceStr set to: " + window.destinationplaceStr)
+                setDestinationMessage(true)
+            }
+            else {
+                console.log('Nothing stored')
+            }
+
+            //React.findDOMNode(this.refs.form).reset();
             // console.log(process.env.REACT_APP_API_KEY)
             // console.log(`${process.env.REACT_APP_API_KEY}`)
             // const qString = {
@@ -71,7 +124,17 @@ function AirportInfo() {
             //     "inboundpartialdate": inboundpartialdate
             // }
             // let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US?" + new URLSearchParams(qString), reqOptions) //doesn't work
-            let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US/" + originplace + "/" + destinationplace + "/" + 
+            
+            // console.log(originplace)
+            // console.log(destinationplace)
+
+            console.log(originplaceStr)
+            console.log(destinationplaceStr)
+
+            // let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US/" + originplace + "/" + destinationplace + "/" + 
+                // outboundpartialdate + "/" + inboundpartialdate, reqOptions)
+
+            let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US/" + window.originplaceStr + "/" + window.destinationplaceStr + "/" + 
                 outboundpartialdate + "/" + inboundpartialdate, reqOptions)
             // let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/US/USD/en-US/SFO-sky/JFK-sky/2019-01-01?inboundpartialdate=2019-09-01",
             //     reqOptions) //doesn't work
@@ -84,8 +147,8 @@ function AirportInfo() {
             response = await response.json()
             console.log(response)
             setQuotes(response.Quotes)
-            setQuotes2(response.Quotes)
-            console.log(response.Quotes) //Warning: Each child in a list should have a unique "key" prop.
+            //setQuotes2(response.Quotes)
+            console.log(response.Quotes)
         }
         fetchMyAPI()
         setShowQuotes(true)
@@ -123,11 +186,11 @@ function AirportInfo() {
                 <input id="queryInput" value={originplace} onChange={e => setOriginplace(e.target.value)} placeholder="AMS-sky" required/>
                 <label htmlFor="queryInput">To:</label>
                 <input id="queryInput" value={destinationplace} onChange={e => setDestinationplace(e.target.value)} placeholder="LAX-sky" required/>
-                <br />
+                <br />*/}
                 <label htmlFor="queryInput">Depart:</label>
                 <input id="queryInput" value={outboundpartialdate} onChange={e => setOutboundpartialdate(e.target.value)} placeholder = "2021-03" required/>
                 <label htmlFor="queryInput">Return (round trip):</label>
-                <input id="queryInput" value={inboundpartialdate} onChange={e => setInboundpartialdate(e.target.value)} placeholder = "2021-04" required/>*/}
+                <input id="queryInput" value={inboundpartialdate} onChange={e => setInboundpartialdate(e.target.value)} placeholder = "2021-04" required/>
 
                 {/* <label htmlFor="queryInput">State or Country:</label> //need to comment with braces */}
                 {/* <input id="queryInput" value={query} onChange={e => setQuery(e.target.value)} required/> */}
@@ -135,10 +198,15 @@ function AirportInfo() {
            </form>
            { showPlaces ? 
                 <div>
-                    <h2>Choose an origin airport in the table below. Scroll down to choose a destination airport.</h2>
+                    <h2>Choose an origin airport in the table below by clicking a row. Scroll down to submit.</h2>
                         <Places places={places1}></Places> 
+                        <button className="search" onClick={handleOriginSubmit}>Submit Origin Airport</button>
+                        {originMessage ? <h4>Origin airport {window.originplaceStr} selected!</h4> : <></>}
                     <h2>Choose a destination airport:</h2>
                         <Places places={places2}></Places>
+                        <button className="search" onClick={handleQuotesSubmit}>Submit Destination Airport</button>
+                        {destinationMessage ? <h4>Destination airport {window.destinationplaceStr} selected!</h4> : <></>}
+                        {showQuotes ? <Quotes quotes={quotes}></Quotes> : <></>}
                 </div> : <></>
             }
         </div>
