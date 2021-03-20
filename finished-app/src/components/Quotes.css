@@ -11,5 +11,7 @@ td, th {
     padding: 0.5rem;
     text-align: left;
 }
-  
-  
+
+tbody tr:nth-child(-n+3){
+    background-color: #FFD700;
+}

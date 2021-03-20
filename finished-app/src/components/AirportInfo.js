@@ -10,6 +10,7 @@ function AirportInfo() {
     const [places2,setPlaces2] = useState([])
     const [query2,setQuery2] = useState("")
     const [quotes,setQuotes] = useState([])
+    const [carriers, setCarriers] = useState([])
     //const [quotes2,setQuotes2] = useState([])
     //const [originplace,setOriginplace] = useState("")
     //const [destinationplace,setDestinationplace] = useState("")
@@ -25,7 +26,7 @@ function AirportInfo() {
     var originplaceStr = "";
     var destinationplaceStr = "";
 
-    const originText = React.createRef();
+    //const originText = React.createRef();
 
     function handlePlacesSubmit(e) {
         e.preventDefault()
@@ -150,16 +151,22 @@ function AirportInfo() {
             //     + "/" + new URLSearchParams({destinationplace: destinationplace}), reqOptions) //doesn't work
             // let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/US/USD/en-US/?" +  originplace + "/" + destinationplace, 
             //     reqOptions) //doesn't work
-            console.log(response)
+            console.log('response: ', response)
             response = await response.json()
-            console.log(response)
+            console.log('response json: ', response)
+            //setQuotes(response.Quotes)
             setQuotes(response.Quotes)
+            console.log('quotes: ', quotes)
+            //console.log(quotes.Quotes)
+            console.log('quotes set to response')
+            setCarriers(response.Carriers)
             //setQuotes2(response.Quotes)
-            console.log(response.Quotes)
+            //console.log('response.Quotes: ', response.Quotes)
         }
         fetchMyAPI()
         setShowQuotes(true)
-        {/*}
+
+        {/*
         setOriginplace("")
         setDestinationplace("")
         setOutboundpartialdate("")
@@ -179,7 +186,7 @@ function AirportInfo() {
         // this.setState({childObj:value});
     }
 
-````*/}
+    */}
 
     return(
         <div className="airportinfo">
@@ -217,8 +224,12 @@ function AirportInfo() {
                     <h2>Choose a destination airport:</h2>
                         <Places places={places2}></Places>
                         <button className="search" onClick={handleQuotesSubmit}>Submit Destination Airport and See Flight Options</button>
-                        {destinationMessage ? <h4>Destination airport {window.destinationplaceStr} selected!</h4> : <></>}
-                        {showQuotes ? <Quotes quotes={quotes}></Quotes> : <></>}
+                        <div id='destinationID'></div>
+                        <div id='quotesID'></div>
+                        
+                          {destinationMessage ? <h4>Destination airport {window.destinationplaceStr} selected!</h4> : <></>}
+                          {showQuotes ? <Quotes quotes={quotes} carrierPlanes={carriers}></Quotes> : <></>}
+                        
                 </div> : <></>
             }
         </div>
@@ -228,8 +239,7 @@ function AirportInfo() {
 
 export default AirportInfo;
 
-{
-    /*           {showQuotes ?
+{/*     {showQuotes ?
            //  <div>
            //      <Quotes quotes={quotes}></Quotes>
            //      <Quotes quotes={quotes2}></Quotes>
