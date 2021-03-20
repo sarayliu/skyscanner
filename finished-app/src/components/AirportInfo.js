@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import ReactDOM from 'react-dom';
 import './AirportInfo.css';
 import Quotes from './Quotes';
 import Places from './Places';
@@ -14,14 +15,17 @@ function AirportInfo() {
     //const [destinationplace,setDestinationplace] = useState("")
     const [outboundpartialdate,setOutboundpartialdate] = useState("")
     const [inboundpartialdate,setInboundpartialdate] = useState("")
+    const [currency, setCurrency] = useState("")
     const [showPlaces,setShowPlaces] = useState(false)
     const [showQuotes,setShowQuotes] = useState(false)
 
-    const [originMessage, setOriginMessage] = useState(false)
+    //const [originMessage, setOriginMessage] = useState(false)
     const [destinationMessage, setDestinationMessage] = useState(false)
 
     var originplaceStr = "";
     var destinationplaceStr = "";
+
+    const originText = React.createRef();
 
     function handlePlacesSubmit(e) {
         e.preventDefault()
@@ -50,6 +54,7 @@ function AirportInfo() {
     }
 
     function handleOriginSubmit(e) { //need to capitalize function to make it a React component and be able to use useEffect
+        e.preventDefault()
         if (localStorage.getItem("myJson") !== null) {
               var passedJson = localStorage.getItem("myJson") //get saved data anytime
               console.log('Origin Airport: ' + passedJson)
@@ -74,7 +79,9 @@ function AirportInfo() {
 
               window.originplaceStr = passedJson;
               console.log("originplaceStr set to: " + window.originplaceStr)
-              setOriginMessage(true)
+              //setOriginMessage(true)
+              ReactDOM.render(<h4>Origin airport {window.originplaceStr} selected!</h4>, document.getElementById('originID'))
+              {/*originText.current.focus();*/}
          }
          else {
              console.log('Nothing stored')
@@ -134,7 +141,7 @@ function AirportInfo() {
             // let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US/" + originplace + "/" + destinationplace + "/" + 
                 // outboundpartialdate + "/" + inboundpartialdate, reqOptions)
 
-            let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/USD/en-US/" + window.originplaceStr + "/" + window.destinationplaceStr + "/" + 
+            let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsedates/v1.0/US/" + currency + "/en-US/" + window.originplaceStr + "/" + window.destinationplaceStr + "/" + 
                 outboundpartialdate + "/" + inboundpartialdate, reqOptions)
             // let response = await fetch("https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/US/USD/en-US/SFO-sky/JFK-sky/2019-01-01?inboundpartialdate=2019-09-01",
             //     reqOptions) //doesn't work
@@ -172,7 +179,7 @@ function AirportInfo() {
         // this.setState({childObj:value});
     }
 
-*/}
+````*/}
 
     return(
         <div className="airportinfo">
@@ -187,10 +194,14 @@ function AirportInfo() {
                 <label htmlFor="queryInput">To:</label>
                 <input id="queryInput" value={destinationplace} onChange={e => setDestinationplace(e.target.value)} placeholder="LAX-sky" required/>
                 <br />*/}
+
                 <label htmlFor="queryInput">Depart:</label>
                 <input id="queryInput" value={outboundpartialdate} onChange={e => setOutboundpartialdate(e.target.value)} placeholder = "2021-03" required/>
                 <label htmlFor="queryInput">Return (round trip):</label>
                 <input id="queryInput" value={inboundpartialdate} onChange={e => setInboundpartialdate(e.target.value)} placeholder = "2021-04" required/>
+
+                <label htmlFor="queryInput">Currency:</label>
+                <input id="queryInput" value={currency} onChange={e => setCurrency(e.target.value)} placeholder = "USD" required/>
 
                 {/* <label htmlFor="queryInput">State or Country:</label> //need to comment with braces */}
                 {/* <input id="queryInput" value={query} onChange={e => setQuery(e.target.value)} required/> */}
@@ -201,10 +212,11 @@ function AirportInfo() {
                     <h2>Choose an origin airport in the table below by clicking a row. Scroll down to submit.</h2>
                         <Places places={places1}></Places> 
                         <button className="search" onClick={handleOriginSubmit}>Submit Origin Airport</button>
-                        {originMessage ? <h4>Origin airport {window.originplaceStr} selected!</h4> : <></>}
+                        <div id='originID'></div>
+                        {/*{originMessage ? <h4 ref={originText}>Origin airport {window.originplaceStr} selected!</h4> : <></>}*/}
                     <h2>Choose a destination airport:</h2>
                         <Places places={places2}></Places>
-                        <button className="search" onClick={handleQuotesSubmit}>Submit Destination Airport</button>
+                        <button className="search" onClick={handleQuotesSubmit}>Submit Destination Airport and See Flight Options</button>
                         {destinationMessage ? <h4>Destination airport {window.destinationplaceStr} selected!</h4> : <></>}
                         {showQuotes ? <Quotes quotes={quotes}></Quotes> : <></>}
                 </div> : <></>

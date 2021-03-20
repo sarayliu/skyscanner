@@ -24,7 +24,7 @@ function Quotes(props) {
                     {props.quotes.map(quote => {
                         return (<tr id={quote.QuoteId} onClick={() => console.log(quote.QuoteId)}>
                             <th>{quote.QuoteId}</th>
-                            <th>${quote.MinPrice}</th>
+                            <th>{quote.MinPrice}</th>
                             <th>{quote.OutboundLeg.CarrierIds}</th>
                             <th>{quote.OutboundLeg.DepartureDate}</th>
                             <th>{quote.InboundLeg.CarrierIds}</th>
