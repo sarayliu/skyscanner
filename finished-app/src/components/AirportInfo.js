@@ -212,7 +212,7 @@ function AirportInfo() {
 
                 {/* <label htmlFor="queryInput">State or Country:</label> //need to comment with braces */}
                 {/* <input id="queryInput" value={query} onChange={e => setQuery(e.target.value)} required/> */}
-                <button className="search">Submit States and Dates</button>
+                <button className="search">Submit Preliminary Information</button>
            </form>
            { showPlaces ? 
                 <div>
@@ -224,11 +224,8 @@ function AirportInfo() {
                     <h2>Choose a destination airport:</h2>
                         <Places places={places2}></Places>
                         <button className="search" onClick={handleQuotesSubmit}>Submit Destination Airport and See Flight Options</button>
-                        <div id='destinationID'></div>
-                        <div id='quotesID'></div>
-                        
-                          {destinationMessage ? <h4>Destination airport {window.destinationplaceStr} selected!</h4> : <></>}
-                          {showQuotes ? <Quotes quotes={quotes} carrierPlanes={carriers}></Quotes> : <></>}
+                        {destinationMessage ? <h4>Destination airport {window.destinationplaceStr} selected!</h4> : <></>}
+                        {showQuotes ? <Quotes quotes={quotes} carrierPlanes={carriers}></Quotes> : <></>}
                         
                 </div> : <></>
             }

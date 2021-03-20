@@ -20,11 +20,11 @@ function Quotes(props) {
                 <thead>
                     <tr>
                         <th>Quote ID</th>
-                        <th>Min Price</th>
-                        <th>Outbound Carrier IDs</th>
+                        <th>Price</th>
+                        <th>Outbound Carrier ID</th>
                         <th>Outbound Carrier Name</th>
                         <th>Outbound Leg Departure Date</th>
-                        <th>Inbound Carrier IDs</th>
+                        <th>Inbound Carrier ID</th>
                         <th>Inbound Carrier Name</th>
                         <th>Inbound Leg Departure Date</th>
                         <th>Direct Flight?</th>
